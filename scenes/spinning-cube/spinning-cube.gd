@@ -20,7 +20,16 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-extends Control
+extends Spatial
+
+
+#########################################
+#
+# Constants
+#
+
+const ROTATION_AXIS := Vector3( 0.4, 0.7, 0.2 )
+const ROTATION_SPEED := 0.15                        # Turns per second
 
 
 #########################################
@@ -28,23 +37,6 @@ extends Control
 # Overrides
 #
 
-func _ready():
-    ($Version/Game as Label).text =\
-        "Version: v%s" % ProjectSettings.get_setting("application/config/version")
-    ($Version/Engine as Label).text =\
-        "Engine: Godot %s" % Engine.get_version_info().string
-    ($Menu/Play as Control).grab_focus()
-
-
-#########################################
-#
-# Event handlers
-#
-
-func _on_Play_pressed() -> void:
-    var scene = load( "res://scenes/spinning-cube/spinning-cube.tscn" )
-    # warning-ignore:return_value_discarded
-    get_tree().change_scene_to( scene )
-
-func _on_Exit_pressed() -> void:
-    get_tree().quit()
+func _process( delta: float ) -> void:
+    var axis := ROTATION_AXIS.normalized()
+    ($Cube as MeshInstance).rotate( axis, ROTATION_SPEED * delta * PI * 2 )

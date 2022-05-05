@@ -106,3 +106,6 @@ margin_bottom = 52.0
 grow_horizontal = 0
 custom_colors/font_color = Color( 0.92549, 0.92549, 0.92549, 1 )
 text = "Shifty Logic Studios"
+
+[connection signal="pressed" from="Menu/Play" to="." method="_on_Play_pressed"]
+[connection signal="pressed" from="Menu/Exit" to="." method="_on_Exit_pressed"]
