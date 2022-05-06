@@ -15,6 +15,10 @@ run/main_scene="res://scenes/main/main.tscn"
 config/icon="res://assets/icon.png"
 config/version="0.1.0"
 
+[autoload]
+
+Game="*res://addons/core/autoload/game.gd"
+
 [debug]
 
 gdscript/warnings/treat_warnings_as_errors=true
@@ -26,9 +30,7 @@ gdscript/warnings/unsafe_call_argument=true
 
 [display]
 
-window/size/width=1280
-window/size/height=720
+window/size/width=1920
+window/size/height=1080
 window/size/resizable=false
-window/size/test_width=1920
-window/size/test_height=1080
 window/dpi/allow_hidpi=true

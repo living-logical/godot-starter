@@ -29,11 +29,14 @@ extends Control
 #
 
 func _ready():
-    ($Version/Game as Label).text =\
+    ($SafeArea/BottomArea/Version/Game as Label).text =\
         "Version: v%s" % ProjectSettings.get_setting("application/config/version")
-    ($Version/Engine as Label).text =\
+    ($SafeArea/BottomArea/Version/Engine as Label).text =\
         "Engine: Godot %s" % Engine.get_version_info().string
-    ($Menu/Play as Control).grab_focus()
+    ($SafeArea/MainArea/Content/Menu/Play as Control).grab_focus()
+
+    # The main menu never cares about the pause state
+    pause_mode = Node.PAUSE_MODE_PROCESS
 
 
 #########################################
@@ -42,9 +45,11 @@ func _ready():
 #
 
 func _on_Play_pressed() -> void:
-    var scene = load( "res://scenes/spinning-cube/spinning-cube.tscn" )
-    # warning-ignore:return_value_discarded
-    get_tree().change_scene_to( scene )
+    Game.change_scene( "spinning-cube" )
+
+
+func _on_Settings_pressed() -> void:
+    Game.change_scene( "settings" )
 
 func _on_Exit_pressed() -> void:
-    get_tree().quit()
+    Game.exit()

@@ -20,7 +20,13 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-extends Spatial
+extends Node
+
+
+#########################################
+#
+# Signals
+#
 
 
 #########################################
@@ -28,8 +34,36 @@ extends Spatial
 # Constants
 #
 
-const ROTATION_AXIS := Vector3( 0.4, 0.7, 0.2 )
-const ROTATION_SPEED := 0.15                        # Turns per second
+# TODO: This should come from a config file
+const SCENES: Dictionary = {
+    "main": "res://scenes/main/main.tscn",
+    "spinning-cube": "res://scenes/spinning-cube/spinning-cube.tscn",
+}
+
+
+#########################################
+#
+# Private variables
+#
+
+
+#########################################
+#
+# Public methods
+#
+
+
+func change_scene( name: String, params = {} ) -> void:
+    if not SCENES.has( name ):
+        print( "No scene" )
+        return
+
+    var scene = load( SCENES.get( name ) )
+    # warning-ignore:return_value_discarded
+    get_tree().change_scene_to( scene )
+
+func exit() -> void:
+    get_tree().quit()
 
 
 #########################################
@@ -37,10 +71,11 @@ const ROTATION_SPEED := 0.15                        # Turns per second
 # Overrides
 #
 
-func _input( event: InputEvent ):
-    if event.is_action( "ui_cancel" ):
-        Game.change_scene( "main" )
+func _ready():
+    pass
 
-func _process( delta: float ) -> void:
-    var axis := ROTATION_AXIS.normalized()
-    ($Cube as MeshInstance).rotate( axis, ROTATION_SPEED * delta * PI * 2 )
+
+#########################################
+#
+# Event handlers
+#
