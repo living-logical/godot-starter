@@ -67,11 +67,8 @@ func _ready() -> void:
     _spinner.play( "spin" )
     _bar.visible = not _hideProgress
 
-    # warning-ignore:return_value_discarded
     Game.connect( "scene_loading", self, "_on_starting" )
-    # warning-ignore:return_value_discarded
     Game.connect( "scene_change_completed", self, "_on_completed" )
-    # warning-ignore:return_value_discarded
     Game.connect( "scene_stage_completed", self, "_on_progress" )
 
 func _exit_tree():
@@ -87,7 +84,6 @@ func _on_completed( _name: String ) -> void:
     var dt := float(OS.get_ticks_msec() - _startTime) / 1000.0
     var delay := MINIMUM_DELAY - dt if dt < 0.0 else 0.0
 
-    # warning-ignore:return_value_discarded
     _fader.interpolate_property(
         $BG,
         "modulate",
@@ -98,17 +94,16 @@ func _on_completed( _name: String ) -> void:
         Tween.EASE_IN_OUT,
         delay
     )
-    # warning-ignore:return_value_discarded
     _fader.start()
+
     yield( _fader, "tween_completed" )
     queue_free()
 
 func _on_progress( _name: String, index: int ) -> void:
-    var percent := float(index) / float(_stages)
     if _stepper.is_active():
-        # warning-ignore:return_value_discarded
         _stepper.stop_all()
-    # warning-ignore:return_value_discarded
+
+    var percent := float(index) / float(_stages)
     _stepper.interpolate_property(
         _bar,                   # target
         "value",                # property
@@ -119,7 +114,6 @@ func _on_progress( _name: String, index: int ) -> void:
         Tween.EASE_IN_OUT,      # easing style
         0                       # transition delay
     )
-    # warning-ignore:return_value_discarded
     _stepper.start()
 
 func _on_starting( _name: String, stages: int ) -> void:

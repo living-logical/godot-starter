@@ -55,23 +55,6 @@ var _shouldExit = false
 
 #########################################
 #
-# Public methods
-#
-
-func is_alive() -> bool:
-    return _thread.is_alive()
-
-func load_start( resource: String ) -> void:
-    assert( _thread.is_alive() )
-    _lock.lock()
-    _loadQueue.append( resource )
-    _lock.unlock()
-    print_debug( "Resource '%s' queued" % resource )
-    _gate.post()
-
-
-#########################################
-#
 # Overrides
 #
 
@@ -88,6 +71,23 @@ func _exit_tree():
     print_debug( "Posted exit to resource thread" )
     _thread.wait_to_finish()
     print_debug( "Thread stopped" )
+
+
+#########################################
+#
+# Public methods
+#
+
+func is_alive() -> bool:
+    return _thread.is_alive()
+
+func load_start( resource: String ) -> void:
+    assert( _thread.is_alive() )
+    _lock.lock()
+    _loadQueue.append( resource )
+    _lock.unlock()
+    print_debug( "Resource '%s' queued" % resource )
+    _gate.post()
 
 
 #########################################

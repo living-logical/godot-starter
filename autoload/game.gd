@@ -188,7 +188,8 @@ func _load_pause_scene( params: Dictionary ) -> Node:
         assert( _Pause != null )
         return _Pause.instance()
     elif scene is String:
-        return load( scene ).instance()
+        var packed: PackedScene = load( scene )
+        return packed.instance()
     elif scene is Node:
         return scene
     else:
@@ -200,7 +201,8 @@ func _load_transition_scene( params: Dictionary ) -> Node:
         assert( _Transition != null )
         return _Transition.instance()
     elif scene is String:
-        return load( scene ).instance()
+        var packed: PackedScene = load( scene )
+        return packed.instance()
     elif scene is Node:
         return scene
     else:
