@@ -40,27 +40,20 @@ signal scene_change_completed( name )
 
 const ResourceLoaderMT := preload( "internal/resource-loader.gd" )
 
-# TODO: This should come from a config file
-const SCENES: Dictionary = {
-    "main": "res://scenes/main/main.tscn",
-    "spinning-cube": "res://scenes/spinning-cube/spinning-cube.tscn",
-}
-
-# TODO: This comes from settings as well
-const Loader := preload( "res://scenes/loading/loading.tscn" )
-
 
 #########################################
 #
 # Private variables
 #
 
+onready var _package := _load_package()
 onready var _loader := ResourceLoaderMT.new()
 
+var _Transition: PackedScene = null
+
+var _loadingOverlay : bool = false
 var _loadStart: int
 var _stageStart: int
-
-var _params: Dictionary
 
 
 #########################################
@@ -69,19 +62,38 @@ var _params: Dictionary
 #
 
 func change_scene( name: String, params = {} ) -> void:
-    if not SCENES.has( name ):
-        print( "No scene" )
-        return
+    # Validate that the scene requested exists
+    var scenes = _package.get( "scenes" )
+    assert( scenes is Dictionary, "package must container a 'scenes' dictionary" )
+    assert( scenes.has( name ), "'%s' scene does not exist in package" % name )
 
-    _start_loader( params )
+    # Fix up any necessary arguments
+    var p = params if params else {}
+    var transitionParams = p.get( "transition" ) if p.has( "transition" ) else {}
 
-    _params = params
+    # Setup local state for incoming scene load
+    _loadingOverlay = p.get( "overlay" ) == true
+
+    # Start any loading
+    _start_load_transition( transitionParams )
+
+    # Begin loading the new scene
     _loadStart = OS.get_ticks_usec()
     _stageStart = _loadStart
-    _loader.load_start( SCENES.get( name ) )
+    _loader.load_start( scenes.get( name ) )
 
 func exit() -> void:
     get_tree().quit()
+
+func name() -> String:
+    assert( _package != null )
+    assert( _package.has( "name" ), "package must contain a 'name' property" )
+    return _package.get( "name" )
+
+func version() -> String:
+    assert( _package != null )
+    assert( _package.has( "version" ), "package must contain a 'version' property" )
+    return _package.get( "version" )
 
 
 #########################################
@@ -89,8 +101,8 @@ func exit() -> void:
 # Overrides
 #
 
-func _ready():
-    assert( _loader != null )
+func _ready() -> void:
+    assert( _loader != null, "resource loader must be valid" )
     _loader.name = "ResourceLoader"
     get_node( "/root/" ).call_deferred( "add_child", _loader )
 
@@ -105,18 +117,50 @@ func _ready():
 # Private methods
 #
 
-func _start_loader( params: Dictionary ):
-    if params and params.get( "no_loader" ):
-        return
-    var loader = _get_loader( params )
-    if params and params.has( "loader_config" ) and loader.has_method( "configure" ):
-        loader.call( "configure", params.get( "loader_config" ) )
-    get_tree().root.add_child( loader )
+func _load_package() -> Dictionary:
+    var script = load( "res://package.gd" )
+    assert( is_instance_valid( script ), "a 'package.gd' root resource is missing" )
 
-func _get_loader( params: Dictionary ) -> Node:
-    if params and params.has( "loader" ):
-        return params.get( "loader" )
-    return Loader.instance()
+    var package = script.new()
+    assert( package.has_method( "data" ), "package script must contain a 'data' function" )
+
+    var data = package.data()
+    assert( data is Dictionary, "package 'data' must return a valid Dictionary object")
+
+    # Extract a transition scene, if available
+    if data.has( "transition" ):
+        _Transition = load( data.get( "transition" ) )
+
+    return data
+
+func _start_load_transition( params: Dictionary ) -> void:
+    if params.get( "disabled" ):
+        return
+
+    # Load an appropriate transition scene
+    var scene = _load_transition_scene( params )
+    assert( scene != null )
+
+    # Attempt to send any configuration data to scene (if allowed)
+    if scene.has_method( "configure" ):
+        var config = params.get( "config" ) if params.has( "config" ) else {}
+        scene.configure( config )
+
+    # Add scene to the root. The scene should have registered for the
+    # 'scene_change_complete' signal and free itself
+    get_tree().root.add_child( scene )
+
+func _load_transition_scene( params: Dictionary ) -> Node:
+    var scene = params.get( "scene" )
+    if not scene:
+        assert( _Transition != null )
+        return _Transition.instance()
+    elif scene is String:
+        return load( scene ).instance()
+    elif scene is Node:
+        return scene
+    else:
+        return null
 
 
 #########################################
@@ -140,12 +184,9 @@ func _on_scene_loaded( name: String, resource: PackedScene ) -> void:
 
     # If this is an overlay, we don't free the current
     # scene. It will just go behind the overlay
-    if _params and not _params.get( "overlay" ):
+    if _loadingOverlay:
         # Release the previous scene
         get_tree().current_scene.queue_free()
-
-    # Now display it based on the desired change
-    if _params and _params.get( "overlay" ):
         get_tree().root.add_child( resource.instance() )
     else:
         get_tree().change_scene_to( resource )

@@ -20,36 +20,17 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-extends Control
+extends Reference
 
 
-#########################################
-#
-# Overrides
-#
+func data() -> Dictionary:
+    return {
+        "name": "Godot Starter",
+        "version": "0.1.0",
 
-func _ready():
-    ($SafeArea/BottomArea/Version/Game as Label).text =\
-        "Version: v%s" % Game.version()
-    ($SafeArea/BottomArea/Version/Engine as Label).text =\
-        "Engine: Godot %s" % Engine.get_version_info().string
-    ($SafeArea/MainArea/Content/Menu/Play as Control).grab_focus()
-
-    # The main menu never cares about the pause state
-    pause_mode = Node.PAUSE_MODE_PROCESS
-
-
-#########################################
-#
-# Event handlers
-#
-
-func _on_Play_pressed() -> void:
-    Game.change_scene( "spinning-cube" )
-
-func _on_Settings_pressed() -> void:
-    var params = { 'transition': { 'disabled': true } }
-    Game.change_scene( "settings", params )
-
-func _on_Exit_pressed() -> void:
-    Game.exit()
+        "transition": "res://scenes/loading/loading.tscn",
+        "scenes": {
+            "main": "res://scenes/main/main.tscn",
+            "spinning-cube": "res://scenes/spinning-cube/spinning-cube.tscn",
+        },
+    }

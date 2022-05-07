@@ -53,17 +53,17 @@ var _hideProgress: bool = false
 # Public methods
 #
 
-func configure( config: Dictionary ):
+func configure( config: Dictionary ) -> void:
     if config == null:
         return
-    _hideProgress = config.get( "no_progress" )
+    _hideProgress = config.get( "hide_progress" ) == true
 
 #########################################
 #
 # Overrides
 #
 
-func _ready():
+func _ready() -> void:
     _spinner.play( "spin" )
     _bar.visible = not _hideProgress
 
