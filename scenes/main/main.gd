@@ -35,9 +35,6 @@ func _ready():
         "Engine: Godot %s" % Engine.get_version_info().string
     ($SafeArea/MainArea/Content/Menu/Play as Control).grab_focus()
 
-    # The main menu never cares about the pause state
-    pause_mode = Node.PAUSE_MODE_PROCESS
-
 
 #########################################
 #

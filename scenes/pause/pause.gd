@@ -20,18 +20,15 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-extends Reference
+extends Control
 
+#########################################
+#
+# Overrides
+#
 
-func data() -> Dictionary:
-    return {
-        "name": "Godot Starter",
-        "version": "0.1.0",
-
-        "pause": "res://scenes/pause/pause.tscn",
-        "transition": "res://scenes/loading/loading.tscn",
-        "scenes": {
-            "main": "res://scenes/main/main.tscn",
-            "spinning-cube": "res://scenes/spinning-cube/spinning-cube.tscn",
-        },
-    }
+func _input( event: InputEvent ) -> void:
+    if event.is_action( "ui_cancel" ):
+        get_tree().set_input_as_handled()
+        queue_free()
+        Game.resume()

@@ -49,6 +49,7 @@ const ResourceLoaderMT := preload( "internal/resource-loader.gd" )
 onready var _package := _load_package()
 onready var _loader := ResourceLoaderMT.new()
 
+var _Pause: PackedScene = null
 var _Transition: PackedScene = null
 
 var _loadingOverlay : bool = false
@@ -84,6 +85,16 @@ func change_scene( name: String, params = {} ) -> void:
 
 func exit() -> void:
     get_tree().quit()
+
+func pause( params: Dictionary = {} ) -> void:
+    # Stop game progressing
+    get_tree().paused = true
+
+    # Display a pause screen (if possible)
+    _start_pause( params )
+
+func resume() -> void:
+    get_tree().paused = false
 
 func name() -> String:
     assert( _package != null )
@@ -127,9 +138,13 @@ func _load_package() -> Dictionary:
     var data = package.data()
     assert( data is Dictionary, "package 'data' must return a valid Dictionary object")
 
-    # Extract a transition scene, if available
+    # Extract a default transition scene, if available
     if data.has( "transition" ):
         _Transition = load( data.get( "transition" ) )
+
+    # Extract a default pause scene, if available
+    if data.has( "pause" ):
+        _Pause = load( data.get( "pause" ) )
 
     return data
 
@@ -149,6 +164,35 @@ func _start_load_transition( params: Dictionary ) -> void:
     # Add scene to the root. The scene should have registered for the
     # 'scene_change_complete' signal and free itself
     get_tree().root.add_child( scene )
+
+func _start_pause( params: Dictionary ) -> void:
+    if params.get( "no_pause" ):
+        return
+
+    # Load an appropriate transition scene
+    var scene = _load_pause_scene( params )
+    assert( scene != null )
+
+    # Attempt to send any configuration data to scene (if allowed)
+    if scene.has_method( "configure" ):
+        var config = params.get( "config" ) if params.has( "config" ) else {}
+        scene.configure( config )
+
+    # Add scene to the root. The scene should have registered for the
+    # 'scene_change_complete' signal and free itself
+    get_tree().root.add_child( scene )
+
+func _load_pause_scene( params: Dictionary ) -> Node:
+    var scene = params.get( "scene" )
+    if not scene:
+        assert( _Pause != null )
+        return _Pause.instance()
+    elif scene is String:
+        return load( scene ).instance()
+    elif scene is Node:
+        return scene
+    else:
+        return null
 
 func _load_transition_scene( params: Dictionary ) -> Node:
     var scene = params.get( "scene" )

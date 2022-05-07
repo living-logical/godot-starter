@@ -40,6 +40,8 @@ const ROTATION_SPEED := 0.15                        # Turns per second
 func _input( event: InputEvent ):
     if event.is_action( "ui_cancel" ):
         Game.change_scene( "main" )
+    elif event.is_action( "ui_accept" ):
+        Game.pause()
 
 func _process( delta: float ) -> void:
     var axis := ROTATION_AXIS.normalized()
