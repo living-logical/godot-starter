@@ -47,9 +47,9 @@ func _ready():
 func _on_Play_pressed() -> void:
     Game.change_scene( "spinning-cube" )
 
-
 func _on_Settings_pressed() -> void:
-    Game.change_scene( "settings" )
+    var params = { 'no_loader': true }
+    Game.change_scene( "settings", params )
 
 func _on_Exit_pressed() -> void:
     Game.exit()
