@@ -231,8 +231,6 @@ func _on_scene_loaded( name: String, resource: PackedScene ) -> void:
     # If this is an overlay, we don't free the current
     # scene. It will just go behind the overlay
     if _loadingOverlay:
-        # Release the previous scene
-        get_tree().current_scene.queue_free()
         get_tree().root.add_child( resource.instance() )
     else:
         get_tree().change_scene_to( resource )

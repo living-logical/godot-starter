@@ -14,8 +14,13 @@ config/name="Starter"
 run/main_scene="res://scenes/main/main.tscn"
 config/icon="res://assets/icon.png"
 
+[audio]
+
+default_bus_layout="res://assets/default_bus_layout.tres"
+
 [autoload]
 
+Audio="*res://autoload/audio.gd"
 Game="*res://autoload/game.gd"
 
 [debug]
