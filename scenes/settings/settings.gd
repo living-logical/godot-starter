@@ -25,10 +25,26 @@ extends Control
 
 #########################################
 #
+# Signals
+#
+
+
+#########################################
+#
 # Constants
 #
 
-const BG_AUDIO: AudioStream = preload( "res://assets/sounds/menu-loop.ogg" )
+
+#########################################
+#
+# Private variables
+#
+
+
+#########################################
+#
+# Public methods
+#
 
 
 #########################################
@@ -36,32 +52,21 @@ const BG_AUDIO: AudioStream = preload( "res://assets/sounds/menu-loop.ogg" )
 # Overrides
 #
 
-func _exit_tree() -> void:
-    print_debug( "Main scene removed." )
+func _input( event: InputEvent ) -> void:
+    if event.is_action( "ui_cancel" ):
+        queue_free()
 
-func _ready() -> void:
-    ($SafeArea/BottomArea/Version/Game as Label).text =\
-        "Version: v%s" % Game.version()
-    ($SafeArea/BottomArea/Version/Engine as Label).text =\
-        "Engine: Godot %s" % Engine.get_version_info().string
-    ($SafeArea/MainArea/Content/Menu/Play as Control).grab_focus()
+func ready() -> void:
+    pass
 
-    # Start the background music
-    #BG_AUDIO.loop_mode = AudioStreamSample.LOOP_FORWARD
-    Audio.play_music( BG_AUDIO )
+
+#########################################
+#
+# Private methods
+#
 
 
 #########################################
 #
 # Event handlers
 #
-
-func _on_Play_pressed() -> void:
-    Game.change_scene( "spinning-cube" )
-
-func _on_Settings_pressed() -> void:
-    var params = { 'overlay': true, 'transition': { 'disabled': true } }
-    Game.change_scene( "settings", params )
-
-func _on_Exit_pressed() -> void:
-    Game.exit()

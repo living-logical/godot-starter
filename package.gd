@@ -32,6 +32,9 @@ func data() -> Dictionary:
         "transition": "res://scenes/loading/loading.tscn",
         "scenes": {
             "main": "res://scenes/main/main.tscn",
+            "settings": "res://scenes/settings/settings.tscn",
             "spinning-cube": "res://scenes/spinning-cube/spinning-cube.tscn",
         },
+
+        "resolutions": [],
     }
