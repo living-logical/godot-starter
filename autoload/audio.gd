@@ -28,7 +28,8 @@ extends Node
 # Signals
 #
 
-signal master_volume_changed( volume )
+signal fx_complete( tag )
+signal volume_changed( channel, volume )
 
 
 #########################################
@@ -36,7 +37,15 @@ signal master_volume_changed( volume )
 # Constants
 #
 
-const DEFAULT_MASTER_VOLUME: float = -3.0
+const DEFAULT_FX_VOLUME: float = 0.0
+const DEFAULT_MAIN_VOLUME: float = -3.0
+const DEFAULT_MUSIC_VOLUME: float = 0.0
+
+const FX_CHANNEL := "FX"
+const MAIN_CHANNEL := "Master"
+const MUSIC_CHANNEL := "Music"
+
+const DEFAULT_FX_CACHE: int = 5
 
 
 #########################################
@@ -46,6 +55,8 @@ const DEFAULT_MASTER_VOLUME: float = -3.0
 
 onready var _musicPlayer := AudioStreamPlayer.new()
 
+var _fxCache: Array = []
+
 
 #########################################
 #
@@ -53,7 +64,9 @@ onready var _musicPlayer := AudioStreamPlayer.new()
 #
 
 func _ready() -> void:
-    set_master_volume( DEFAULT_MASTER_VOLUME );
+    set_fx_volume( DEFAULT_FX_VOLUME );
+    set_main_volume( DEFAULT_MAIN_VOLUME );
+    set_music_volume( DEFAULT_MUSIC_VOLUME );
     _init_music()
 
 
@@ -62,25 +75,60 @@ func _ready() -> void:
 # Public methods
 #
 
+func play_fx( stream: AudioStream, tag: String = "" ) -> void:
+    var player = _get_fx_player()
+    player.stream = stream
+    if not tag.empty():
+        player.connect( "finished", self, "_fx_emit_complete", [ tag ], CONNECT_ONESHOT)
+    player.play()
+
 func play_music( stream: AudioStream ) -> void:
     _musicPlayer.stream = stream
     _musicPlayer.play()
 
-func set_master_volume( volume: float ) -> void:
-    AudioServer.set_bus_volume_db(
-        AudioServer.get_bus_index( "Master" ),
-        volume
-    )
-    emit_signal( "master_volume_changed", volume )
+func stop_music() -> void:
+    _musicPlayer.stop()
+    _musicPlayer.stream = null
+
+func set_fx_volume( volume: float ) -> void:
+    _set_volume( FX_CHANNEL, volume )
+
+func set_main_volume( volume: float ) -> void:
+    _set_volume( MAIN_CHANNEL, volume )
+
+func set_music_volume( volume: float ) -> void:
+    _set_volume( MUSIC_CHANNEL, volume )
+
 #########################################
 #
 # Private methods
 #
 
+func _get_fx_player() -> AudioStreamPlayer:
+    return _fxCache.pop_back() if not _fxCache.empty() else _make_fx_player()
+
+func _init_fx() -> void:
+    for i in DEFAULT_FX_CACHE:
+        _fxCache.append( _make_fx_player() )
+
 func _init_music() -> void:
-    _musicPlayer.name = "BackgroundAudio"
-    _musicPlayer.bus = "Music"
+    _musicPlayer.name = "MusicPlayer"
+    _musicPlayer.bus = MUSIC_CHANNEL
     add_child( _musicPlayer )
+
+func _make_fx_player() -> AudioStreamPlayer:
+    var fx = AudioStreamPlayer.new()
+    fx.bus = FX_CHANNEL
+    add_child( fx )
+    fx.connect( "finished", self, "_cleanup_fx_player", [ fx ] )
+    return fx
+
+func _set_volume( channel: String, volume: float ) -> void:
+    AudioServer.set_bus_volume_db(
+        AudioServer.get_bus_index( channel ),
+        volume
+    )
+    emit_signal( "volume_changed", channel, volume )
 
 
 #########################################
@@ -88,3 +136,11 @@ func _init_music() -> void:
 # Event handlers
 #
 
+func _cleanup_fx_player( player: AudioStreamPlayer ) -> void:
+    if _fxCache.size() < DEFAULT_FX_CACHE:
+        _fxCache.append( player )
+    else:
+        player.queue_free()
+
+func _fx_emit_complete( tag: String ) -> void:
+    emit_signal( "fx_complete", tag )

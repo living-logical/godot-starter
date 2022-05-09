@@ -37,6 +37,7 @@ const BG_AUDIO: AudioStream = preload( "res://assets/sounds/menu-loop.ogg" )
 #
 
 func _exit_tree() -> void:
+    Audio.stop_music()
     print_debug( "Main scene removed." )
 
 func _ready() -> void:
@@ -47,9 +48,7 @@ func _ready() -> void:
     ($SafeArea/MainArea/Content/Menu/Play as Control).grab_focus()
 
     # Start the background music
-    #BG_AUDIO.loop_mode = AudioStreamSample.LOOP_FORWARD
     Audio.play_music( BG_AUDIO )
-
 
 #########################################
 #
