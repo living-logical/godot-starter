@@ -48,7 +48,7 @@ func _ready() -> void:
     ($SafeArea/MainArea/Content/Menu/Play as Control).grab_focus()
 
     # Start the background music
-    Audio.play_music( BG_AUDIO )
+    #Audio.play_music( BG_AUDIO )
 
 #########################################
 #

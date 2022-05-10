@@ -20,13 +20,8 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-extends %BASE%
-
-
-#########################################
-#
-# Signals
-#
+tool
+extends Button
 
 
 #########################################
@@ -34,26 +29,8 @@ extends %BASE%
 # Constants
 #
 
-
-#########################################
-#
-# Private variables
-#
-
-
-#########################################
-#
-# Overrides
-#
-
-func _ready() -> void:
-    pass
-
-
-#########################################
-#
-# Public methods
-#
+const LABEL_NORMAL_COLOR := Color( 0.560784, 0.560784, 0.560784, 1 )
+const LABEL_SELECTED_COLOR := Color( 1, 1, 1, 1 )
 
 
 #########################################
@@ -61,9 +38,25 @@ func _ready() -> void:
 # Private methods
 #
 
+func _refresh_selected( selected: bool ) -> void:
+    add_color_override(
+        "font_color",
+        LABEL_NORMAL_COLOR if selected else LABEL_SELECTED_COLOR
+    )
+    ($Bar as ColorRect).modulate.a = 1.0 if selected else 0.0
+    ($BG as ColorRect).modulate.a = 1.0 if selected else 0.0
+
 
 #########################################
 #
 # Event handlers
 #
 
+func _on_toggled( pressed: bool ) -> void:
+    _refresh_selected( pressed )
+
+func _on_mouse_entered():
+    ($BG as ColorRect).modulate.a = 1.0
+
+func _on_mouse_exited():
+    ($BG as ColorRect).modulate.a = 1.0 if pressed else 0.0

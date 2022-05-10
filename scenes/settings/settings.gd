@@ -56,8 +56,8 @@ func _input( event: InputEvent ) -> void:
     if event.is_action( "ui_cancel" ):
         queue_free()
 
-func ready() -> void:
-    pass
+func _ready() -> void:
+    $SafeArea/Content/Selectors.connect( "selected", self, "_on_selector_changed" )
 
 
 #########################################
@@ -70,3 +70,10 @@ func ready() -> void:
 #
 # Event handlers
 #
+
+func _on_selector_changed( index: int ) -> void:
+    var content := $SafeArea/Content/Sections as Node
+    for idx in content.get_child_count():
+        var child: CanvasItem = content.get_child( idx ) as CanvasItem
+        if child:
+            child.visible = idx == index

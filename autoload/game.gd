@@ -38,7 +38,7 @@ signal scene_change_completed( name )
 # Constants
 #
 
-const ResourceLoaderMT := preload( "internal/resource-loader.gd" )
+const ResourceLoaderMT := preload( "internal/resource_loader.gd" )
 
 
 #########################################

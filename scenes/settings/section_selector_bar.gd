@@ -20,7 +20,8 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-extends %BASE%
+tool
+extends HBoxContainer
 
 
 #########################################
@@ -28,17 +29,15 @@ extends %BASE%
 # Signals
 #
 
-
-#########################################
-#
-# Constants
-#
+signal selected( index )
 
 
 #########################################
 #
 # Private variables
 #
+
+var _group: ButtonGroup = ButtonGroup.new()
 
 
 #########################################
@@ -47,13 +46,7 @@ extends %BASE%
 #
 
 func _ready() -> void:
-    pass
-
-
-#########################################
-#
-# Public methods
-#
+    _init_selectors()
 
 
 #########################################
@@ -61,9 +54,18 @@ func _ready() -> void:
 # Private methods
 #
 
+func _init_selectors() -> void:
+    _group.connect( "pressed", self, "_on_selector_changed" )
+
+    for idx in get_child_count():
+        var btn: Button = get_child( idx ) as Button
+        btn.group = _group
+
 
 #########################################
 #
 # Event handlers
 #
 
+func _on_selector_changed( btn: BaseButton ) -> void:
+    emit_signal( "selected", btn.get_index() )
