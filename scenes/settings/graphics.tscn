@@ -1,0 +1,305 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://assets/themes/controls.tres" type="Theme" id=1]
+[ext_resource path="res://scenes/settings/graphics.gd" type="Script" id=2]
+[ext_resource path="res://assets/styles/control_filled_glow.tres" type="StyleBox" id=3]
+[ext_resource path="res://assets/styles/control_empty.tres" type="StyleBox" id=4]
+[ext_resource path="res://assets/fonts/headline.tres" type="DynamicFont" id=5]
+
+[node name="Graphics" type="VBoxContainer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+theme = ExtResource( 1 )
+script = ExtResource( 2 )
+
+[node name="WindowLabel" type="Label" parent="."]
+margin_right = 1920.0
+margin_bottom = 64.0
+custom_fonts/font = ExtResource( 5 )
+text = "Window"
+
+[node name="Resolution" type="HBoxContainer" parent="."]
+margin_top = 68.0
+margin_right = 1920.0
+margin_bottom = 108.0
+
+[node name="LeftPad" type="Control" parent="Resolution"]
+margin_right = 40.0
+margin_bottom = 40.0
+rect_min_size = Vector2( 40, 0 )
+
+[node name="Label" type="Label" parent="Resolution"]
+margin_left = 44.0
+margin_top = 4.0
+margin_right = 239.0
+margin_bottom = 36.0
+text = "Resolution"
+
+[node name="Spacer" type="Control" parent="Resolution"]
+margin_left = 243.0
+margin_right = 243.0
+margin_bottom = 40.0
+size_flags_horizontal = 2
+
+[node name="Setting" type="OptionButton" parent="Resolution"]
+margin_left = 1476.0
+margin_right = 1876.0
+margin_bottom = 40.0
+rect_min_size = Vector2( 400, 40 )
+custom_styles/focus = ExtResource( 3 )
+custom_styles/normal = ExtResource( 4 )
+flat = true
+align = 2
+
+[node name="RightPad" type="Control" parent="Resolution"]
+margin_left = 1880.0
+margin_right = 1920.0
+margin_bottom = 40.0
+rect_min_size = Vector2( 40, 0 )
+
+[node name="Fullscreen" type="HBoxContainer" parent="."]
+margin_top = 112.0
+margin_right = 1920.0
+margin_bottom = 152.0
+
+[node name="LeftPad" type="Control" parent="Fullscreen"]
+margin_right = 40.0
+margin_bottom = 40.0
+rect_min_size = Vector2( 40, 0 )
+
+[node name="Label" type="Label" parent="Fullscreen"]
+margin_left = 44.0
+margin_top = 4.0
+margin_right = 242.0
+margin_bottom = 36.0
+text = "Full Screen"
+
+[node name="Spacer" type="Control" parent="Fullscreen"]
+margin_left = 246.0
+margin_right = 246.0
+margin_bottom = 40.0
+size_flags_horizontal = 2
+
+[node name="Enabled" type="CheckButton" parent="Fullscreen"]
+margin_left = 1800.0
+margin_right = 1876.0
+margin_bottom = 40.0
+rect_min_size = Vector2( 40, 40 )
+rect_clip_content = true
+
+[node name="RightPad" type="Control" parent="Fullscreen"]
+margin_left = 1880.0
+margin_right = 1920.0
+margin_bottom = 40.0
+rect_min_size = Vector2( 40, 0 )
+
+[node name="VSync" type="HBoxContainer" parent="."]
+margin_top = 156.0
+margin_right = 1920.0
+margin_bottom = 196.0
+
+[node name="LeftPad" type="Control" parent="VSync"]
+margin_right = 40.0
+margin_bottom = 40.0
+rect_min_size = Vector2( 40, 0 )
+
+[node name="Label" type="Label" parent="VSync"]
+margin_left = 44.0
+margin_top = 4.0
+margin_right = 288.0
+margin_bottom = 36.0
+text = "Vertical Sync"
+
+[node name="Spacer" type="Control" parent="VSync"]
+margin_left = 292.0
+margin_right = 292.0
+margin_bottom = 40.0
+size_flags_horizontal = 2
+
+[node name="Enabled" type="CheckButton" parent="VSync"]
+margin_left = 1800.0
+margin_right = 1876.0
+margin_bottom = 40.0
+rect_min_size = Vector2( 40, 40 )
+rect_clip_content = true
+
+[node name="RightPad" type="Control" parent="VSync"]
+margin_left = 1880.0
+margin_right = 1920.0
+margin_bottom = 40.0
+rect_min_size = Vector2( 40, 0 )
+
+[node name="Spacer" type="Control" parent="."]
+margin_top = 200.0
+margin_right = 1920.0
+margin_bottom = 240.0
+rect_min_size = Vector2( 0, 40 )
+
+[node name="QualityTitle" type="Label" parent="."]
+margin_top = 244.0
+margin_right = 1920.0
+margin_bottom = 308.0
+custom_fonts/font = ExtResource( 5 )
+text = "Quality"
+
+[node name="Quality" type="HBoxContainer" parent="."]
+margin_top = 312.0
+margin_right = 1920.0
+margin_bottom = 352.0
+
+[node name="LeftPad" type="Control" parent="Quality"]
+margin_right = 40.0
+margin_bottom = 40.0
+rect_min_size = Vector2( 40, 0 )
+
+[node name="Label" type="Label" parent="Quality"]
+margin_left = 44.0
+margin_top = 4.0
+margin_right = 192.0
+margin_bottom = 36.0
+text = "Presets"
+
+[node name="Spacer" type="Control" parent="Quality"]
+margin_left = 196.0
+margin_right = 196.0
+margin_bottom = 40.0
+size_flags_horizontal = 2
+
+[node name="Setting" type="OptionButton" parent="Quality"]
+margin_left = 1476.0
+margin_right = 1876.0
+margin_bottom = 40.0
+rect_min_size = Vector2( 400, 40 )
+custom_styles/focus = ExtResource( 3 )
+custom_styles/normal = ExtResource( 4 )
+flat = true
+align = 2
+
+[node name="RightPad" type="Control" parent="Quality"]
+margin_left = 1880.0
+margin_right = 1920.0
+margin_bottom = 40.0
+rect_min_size = Vector2( 40, 0 )
+
+[node name="MSAA" type="HBoxContainer" parent="."]
+margin_top = 356.0
+margin_right = 1920.0
+margin_bottom = 396.0
+
+[node name="LeftPad" type="Control" parent="MSAA"]
+margin_right = 40.0
+margin_bottom = 40.0
+rect_min_size = Vector2( 40, 0 )
+
+[node name="Label" type="Label" parent="MSAA"]
+margin_left = 44.0
+margin_top = 4.0
+margin_right = 502.0
+margin_bottom = 36.0
+text = "Multisample Anti-Aliasing"
+
+[node name="Spacer" type="Control" parent="MSAA"]
+margin_left = 506.0
+margin_right = 506.0
+margin_bottom = 40.0
+size_flags_horizontal = 2
+
+[node name="Setting" type="OptionButton" parent="MSAA"]
+margin_left = 1476.0
+margin_right = 1876.0
+margin_bottom = 40.0
+rect_min_size = Vector2( 400, 40 )
+custom_styles/focus = ExtResource( 3 )
+custom_styles/normal = ExtResource( 4 )
+flat = true
+align = 2
+
+[node name="RightPad" type="Control" parent="MSAA"]
+margin_left = 1880.0
+margin_right = 1920.0
+margin_bottom = 40.0
+rect_min_size = Vector2( 40, 0 )
+
+[node name="FXAA" type="HBoxContainer" parent="."]
+margin_top = 400.0
+margin_right = 1920.0
+margin_bottom = 440.0
+
+[node name="LeftPad" type="Control" parent="FXAA"]
+margin_right = 40.0
+margin_bottom = 40.0
+rect_min_size = Vector2( 40, 0 )
+
+[node name="Label" type="Label" parent="FXAA"]
+margin_left = 44.0
+margin_top = 4.0
+margin_right = 627.0
+margin_bottom = 36.0
+text = "Fast Approximate Anti-Aliasing"
+
+[node name="Spacer" type="Control" parent="FXAA"]
+margin_left = 631.0
+margin_right = 631.0
+margin_bottom = 40.0
+size_flags_horizontal = 2
+
+[node name="Enabled" type="CheckButton" parent="FXAA"]
+margin_left = 1800.0
+margin_right = 1876.0
+margin_bottom = 40.0
+rect_min_size = Vector2( 40, 40 )
+rect_clip_content = true
+
+[node name="RightPad" type="Control" parent="FXAA"]
+margin_left = 1880.0
+margin_right = 1920.0
+margin_bottom = 40.0
+rect_min_size = Vector2( 40, 0 )
+
+[node name="Anisotropic" type="HBoxContainer" parent="."]
+visible = false
+margin_top = 588.0
+margin_right = 1920.0
+margin_bottom = 628.0
+
+[node name="LeftPad" type="Control" parent="Anisotropic"]
+margin_right = 40.0
+margin_bottom = 40.0
+rect_min_size = Vector2( 40, 0 )
+
+[node name="Label" type="Label" parent="Anisotropic"]
+margin_left = 44.0
+margin_top = 4.0
+margin_right = 473.0
+margin_bottom = 36.0
+text = "Anisotropic Filter Level"
+
+[node name="Spacer" type="Control" parent="Anisotropic"]
+margin_left = 477.0
+margin_right = 477.0
+margin_bottom = 40.0
+size_flags_horizontal = 2
+
+[node name="Level" type="OptionButton" parent="Anisotropic"]
+margin_left = 1476.0
+margin_right = 1876.0
+margin_bottom = 40.0
+rect_min_size = Vector2( 400, 40 )
+custom_styles/focus = ExtResource( 3 )
+custom_styles/normal = ExtResource( 4 )
+flat = true
+align = 2
+
+[node name="RightPad" type="Control" parent="Anisotropic"]
+margin_left = 1880.0
+margin_right = 1920.0
+margin_bottom = 40.0
+rect_min_size = Vector2( 40, 0 )
+
+[connection signal="item_selected" from="Resolution/Setting" to="." method="_on_resolution_changed"]
+[connection signal="toggled" from="Fullscreen/Enabled" to="." method="_on_fullscreen_toggled"]
+[connection signal="toggled" from="VSync/Enabled" to="." method="_on_vsync_toggled"]
+[connection signal="item_selected" from="Quality/Setting" to="." method="_on_preset_changed"]
+[connection signal="item_selected" from="MSAA/Setting" to="." method="_on_msaa_changed"]
+[connection signal="toggled" from="FXAA/Enabled" to="." method="_on_fxaa_toggled"]
+[connection signal="item_selected" from="Anisotropic/Level" to="." method="_on_anisotropic_changed"]

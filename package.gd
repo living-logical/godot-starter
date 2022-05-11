@@ -36,5 +36,33 @@ func data() -> Dictionary:
             "spinning-cube": "res://scenes/spinning-cube/spinning-cube.tscn",
         },
 
-        "resolutions": [],
+        "resolutions": [
+            Vector2( 3840, 2160 ),
+            Vector2( 2560, 1440 ),
+            Vector2( 1920, 1080 ),
+            Vector2( 1280, 720 ),
+        ],
+
+        "quality": {
+            "Low": {
+                "anistropic": 2,
+                "msaa": 0,
+                "fxaa": false,
+            },
+            "Medium": {
+                "anistropic": 4,
+                "msaa": 2,
+                "fxaa": false,
+            },
+            "High": {
+                "anistropic": 8,
+                "msaa": 3,
+                "fxaa": true,
+            },
+            "Ultra": {
+                "anistropic": 16,
+                "msaa": 4,
+                "fxaa": true,
+            },
+        },
     }

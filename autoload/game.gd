@@ -106,6 +106,16 @@ func version() -> String:
     assert( _package.has( "version" ), "package must contain a 'version' property" )
     return _package.get( "version" )
 
+func get_quality_presets() -> Dictionary:
+    assert( _package != null )
+    assert( _package.has( "quality" ), "package must contain a 'quality' dictionary" )
+    return _package.get( "quality" )
+
+func get_supported_resolutions() -> Array:
+    assert( _package != null )
+    assert( _package.has( "resolutions" ), "package must contain a 'resolutions' array" )
+    return _package.get( "resolutions" )
+
 
 #########################################
 #

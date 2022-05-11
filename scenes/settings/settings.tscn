@@ -1,10 +1,11 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://scenes/settings/settings.gd" type="Script" id=1]
 [ext_resource path="res://scenes/settings/section_selector.tscn" type="PackedScene" id=2]
 [ext_resource path="res://assets/fonts/headline.tres" type="DynamicFont" id=3]
 [ext_resource path="res://assets/materials/gradient_h_glow.tres" type="Material" id=4]
 [ext_resource path="res://scenes/settings/section_selector_bar.tscn" type="PackedScene" id=5]
+[ext_resource path="res://scenes/settings/graphics.tscn" type="PackedScene" id=6]
 [ext_resource path="res://scenes/settings/audio.tscn" type="PackedScene" id=7]
 
 [sub_resource type="ButtonGroup" id=1]
@@ -66,6 +67,8 @@ text = "General"
 margin_left = 304.0
 margin_right = 604.0
 margin_bottom = 100.0
+custom_colors/font_color = Color( 1, 1, 1, 1 )
+pressed = true
 group = SubResource( 1 )
 text = "Graphics"
 
@@ -73,8 +76,6 @@ text = "Graphics"
 margin_left = 608.0
 margin_right = 908.0
 margin_bottom = 100.0
-custom_colors/font_color = Color( 1, 1, 1, 1 )
-pressed = true
 group = SubResource( 1 )
 text = "Audio"
 
@@ -94,25 +95,25 @@ rect_min_size = Vector2( 0, 32 )
 [node name="Sections" type="VBoxContainer" parent="SafeArea/Regions"]
 margin_top = 222.0
 margin_right = 1840.0
-margin_bottom = 382.0
+margin_bottom = 662.0
 
 [node name="General" type="VBoxContainer" parent="SafeArea/Regions/Sections"]
 visible = false
 margin_right = 1840.0
 
-[node name="Graphics" type="Label" parent="SafeArea/Regions/Sections"]
-visible = false
+[node name="Graphics" parent="SafeArea/Regions/Sections" instance=ExtResource( 6 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
 margin_right = 1840.0
-margin_bottom = 600.0
-rect_min_size = Vector2( 0, 600 )
-text = "Graphics"
-align = 1
-valign = 1
+margin_bottom = 440.0
+size_flags_vertical = 3
 
 [node name="Audio" parent="SafeArea/Regions/Sections" instance=ExtResource( 7 )]
+visible = false
 anchor_right = 0.0
+margin_top = 4.0
 margin_right = 1840.0
-margin_bottom = 160.0
+margin_bottom = 164.0
 
 [node name="Controls" type="Label" parent="SafeArea/Regions/Sections"]
 visible = false
