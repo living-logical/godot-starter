@@ -29,8 +29,8 @@ extends Button
 # Constants
 #
 
-const LABEL_NORMAL_COLOR := Color( 0.560784, 0.560784, 0.560784, 1 )
-const LABEL_SELECTED_COLOR := Color( 1, 1, 1, 1 )
+const LABEL_NORMAL_COLOR := Colors.CONTROL_UNFOCUSED_TEXT
+const LABEL_SELECTED_COLOR := Colors.CONTROL_FOCUSED_TEXT
 
 
 #########################################
@@ -41,7 +41,7 @@ const LABEL_SELECTED_COLOR := Color( 1, 1, 1, 1 )
 func _refresh_selected( selected: bool ) -> void:
     add_color_override(
         "font_color",
-        LABEL_NORMAL_COLOR if selected else LABEL_SELECTED_COLOR
+        LABEL_SELECTED_COLOR if selected else LABEL_NORMAL_COLOR
     )
     ($Bar as ColorRect).modulate.a = 1.0 if selected else 0.0
     ($BG as ColorRect).modulate.a = 1.0 if selected else 0.0

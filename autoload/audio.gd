@@ -37,9 +37,9 @@ signal volume_changed( channel, volume )
 # Constants
 #
 
-const DEFAULT_FX_VOLUME: float = 0.0
-const DEFAULT_MAIN_VOLUME: float = -3.0
-const DEFAULT_MUSIC_VOLUME: float = 0.0
+const DEFAULT_FX_VOLUME: float = 0.75
+const DEFAULT_MAIN_VOLUME: float = 0.9
+const DEFAULT_MUSIC_VOLUME: float = 0.5
 
 const FX_CHANNEL := "FX"
 const MAIN_CHANNEL := "Master"
@@ -90,6 +90,15 @@ func stop_music() -> void:
     _musicPlayer.stop()
     _musicPlayer.stream = null
 
+func get_fx_volume() -> float:
+    return _get_volume( FX_CHANNEL )
+
+func get_main_volume() -> float:
+    return _get_volume( MAIN_CHANNEL )
+
+func get_music_volume() -> float:
+    return _get_volume( MUSIC_CHANNEL )
+
 func set_fx_volume( volume: float ) -> void:
     _set_volume( FX_CHANNEL, volume )
 
@@ -123,10 +132,21 @@ func _make_fx_player() -> AudioStreamPlayer:
     fx.connect( "finished", self, "_cleanup_fx_player", [ fx ] )
     return fx
 
+func _get_volume( channel: String ) -> float:
+    var db = AudioServer.get_bus_volume_db(
+        AudioServer.get_bus_index( channel )
+    )
+    var energy = db2linear( db )
+    #print( "DB (%f) <->" % db, " Energy (%f)" % energy )
+    return energy
+
 func _set_volume( channel: String, volume: float ) -> void:
+    var energy := clamp( volume, 0, 100 )
+    var db := linear2db( energy )
+    #print( "Energy (%f) <->" % energy, " DB (%f)" % db )
     AudioServer.set_bus_volume_db(
         AudioServer.get_bus_index( channel ),
-        volume
+        db
     )
     emit_signal( "volume_changed", channel, volume )
 

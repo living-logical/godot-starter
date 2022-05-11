@@ -21,6 +21,7 @@ default_bus_layout="res://assets/default_bus_layout.tres"
 [autoload]
 
 Audio="*res://autoload/audio.gd"
+Colors="*res://autoload/colors.gd"
 Game="*res://autoload/game.gd"
 
 [debug]

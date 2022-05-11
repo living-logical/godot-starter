@@ -20,47 +20,10 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-extends Control
+extends Node
 
+const CONTROL_BASE := Color( 0.180392, 0.423529, 0.603922, 1 )
+const CONTROL_GLOW := Color( 0.282353, 0.631373, 0.894118, 1 )
 
-#########################################
-#
-# Constants
-#
-
-const BG_AUDIO: AudioStream = preload( "res://assets/sounds/menu-loop.ogg" )
-
-
-#########################################
-#
-# Overrides
-#
-
-func _exit_tree() -> void:
-    Audio.stop_music()
-    print_debug( "Main scene removed." )
-
-func _ready() -> void:
-    ($SafeArea/BottomArea/Version/Game as Label).text =\
-        "Version: v%s" % Game.version()
-    ($SafeArea/BottomArea/Version/Engine as Label).text =\
-        "Engine: Godot %s" % Engine.get_version_info().string
-    ($SafeArea/MainArea/Content/Menu/Play as Control).grab_focus()
-
-    # Start the background music
-    Audio.play_music( BG_AUDIO )
-
-#########################################
-#
-# Event handlers
-#
-
-func _on_Play_pressed() -> void:
-    Game.change_scene( "spinning-cube" )
-
-func _on_Settings_pressed() -> void:
-    var params = { 'overlay': true, 'transition': { 'disabled': true } }
-    Game.change_scene( "settings", params )
-
-func _on_Exit_pressed() -> void:
-    Game.exit()
+const CONTROL_UNFOCUSED_TEXT := Color( 0.560784, 0.560784, 0.560784, 1 )
+const CONTROL_FOCUSED_TEXT := Color( 1, 1, 1, 1 )

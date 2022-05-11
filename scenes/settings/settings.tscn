@@ -1,10 +1,11 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://scenes/settings/settings.gd" type="Script" id=1]
 [ext_resource path="res://scenes/settings/section_selector.tscn" type="PackedScene" id=2]
 [ext_resource path="res://assets/fonts/headline.tres" type="DynamicFont" id=3]
-[ext_resource path="res://assets/materials/menu_separator.tres" type="Material" id=4]
+[ext_resource path="res://assets/materials/gradient_h_glow.tres" type="Material" id=4]
 [ext_resource path="res://scenes/settings/section_selector_bar.tscn" type="PackedScene" id=5]
+[ext_resource path="res://scenes/settings/audio.tscn" type="PackedScene" id=7]
 
 [sub_resource type="ButtonGroup" id=1]
 
@@ -26,74 +27,80 @@ margin_top = 40.0
 margin_right = -40.0
 margin_bottom = -40.0
 
-[node name="Content" type="VBoxContainer" parent="SafeArea"]
+[node name="Regions" type="VBoxContainer" parent="SafeArea"]
 margin_right = 1840.0
-margin_bottom = 186.0
+margin_bottom = 1000.0
+
+[node name="Header" type="VBoxContainer" parent="SafeArea/Regions"]
+margin_right = 1840.0
+margin_bottom = 182.0
 size_flags_vertical = 0
 
-[node name="Title" type="Label" parent="SafeArea/Content"]
+[node name="Title" type="Label" parent="SafeArea/Regions/Header"]
 margin_right = 1840.0
 margin_bottom = 64.0
 custom_fonts/font = ExtResource( 3 )
 text = "Settings"
 
-[node name="TitleSeparator" type="ColorRect" parent="SafeArea/Content"]
+[node name="TitleSeparator" type="ColorRect" parent="SafeArea/Regions/Header"]
 material = ExtResource( 4 )
 margin_top = 68.0
 margin_right = 1840.0
 margin_bottom = 78.0
 rect_min_size = Vector2( 0, 10 )
 
-[node name="Selectors" parent="SafeArea/Content" instance=ExtResource( 5 )]
+[node name="Selectors" parent="SafeArea/Regions/Header" instance=ExtResource( 5 )]
 anchor_right = 0.0
 anchor_bottom = 0.0
 margin_top = 82.0
 margin_right = 1840.0
 margin_bottom = 182.0
 
-[node name="General" parent="SafeArea/Content/Selectors" instance=ExtResource( 2 )]
+[node name="General" parent="SafeArea/Regions/Header/Selectors" instance=ExtResource( 2 )]
 margin_right = 300.0
 margin_bottom = 100.0
-pressed = true
 group = SubResource( 1 )
 text = "General"
 
-[node name="Graphics" parent="SafeArea/Content/Selectors" instance=ExtResource( 2 )]
+[node name="Graphics" parent="SafeArea/Regions/Header/Selectors" instance=ExtResource( 2 )]
 margin_left = 304.0
 margin_right = 604.0
 margin_bottom = 100.0
 group = SubResource( 1 )
 text = "Graphics"
 
-[node name="Audio" parent="SafeArea/Content/Selectors" instance=ExtResource( 2 )]
+[node name="Audio" parent="SafeArea/Regions/Header/Selectors" instance=ExtResource( 2 )]
 margin_left = 608.0
 margin_right = 908.0
 margin_bottom = 100.0
+custom_colors/font_color = Color( 1, 1, 1, 1 )
+pressed = true
 group = SubResource( 1 )
 text = "Audio"
 
-[node name="Controls" parent="SafeArea/Content/Selectors" instance=ExtResource( 2 )]
+[node name="Controls" parent="SafeArea/Regions/Header/Selectors" instance=ExtResource( 2 )]
 margin_left = 912.0
 margin_right = 1212.0
 margin_bottom = 100.0
 group = SubResource( 1 )
 text = "Controls"
 
-[node name="Sections" type="Control" parent="SafeArea/Content"]
+[node name="Spacer" type="Control" parent="SafeArea/Regions"]
 margin_top = 186.0
 margin_right = 1840.0
-margin_bottom = 186.0
+margin_bottom = 218.0
+rect_min_size = Vector2( 0, 32 )
 
-[node name="General" type="Label" parent="SafeArea/Content/Sections"]
-margin_top = 4.0
+[node name="Sections" type="VBoxContainer" parent="SafeArea/Regions"]
+margin_top = 222.0
 margin_right = 1840.0
-margin_bottom = 604.0
-rect_min_size = Vector2( 0, 600 )
-text = "General"
-align = 1
-valign = 1
+margin_bottom = 382.0
 
-[node name="Graphics" type="Label" parent="SafeArea/Content/Sections"]
+[node name="General" type="VBoxContainer" parent="SafeArea/Regions/Sections"]
+visible = false
+margin_right = 1840.0
+
+[node name="Graphics" type="Label" parent="SafeArea/Regions/Sections"]
 visible = false
 margin_right = 1840.0
 margin_bottom = 600.0
@@ -102,20 +109,16 @@ text = "Graphics"
 align = 1
 valign = 1
 
-[node name="Audio" type="Label" parent="SafeArea/Content/Sections"]
-visible = false
+[node name="Audio" parent="SafeArea/Regions/Sections" instance=ExtResource( 7 )]
+anchor_right = 0.0
 margin_right = 1840.0
-margin_bottom = 600.0
-rect_min_size = Vector2( 0, 600 )
-text = "Audio
-"
-align = 1
-valign = 1
+margin_bottom = 160.0
 
-[node name="Controls" type="Label" parent="SafeArea/Content/Sections"]
+[node name="Controls" type="Label" parent="SafeArea/Regions/Sections"]
 visible = false
+margin_top = 164.0
 margin_right = 1840.0
-margin_bottom = 600.0
+margin_bottom = 764.0
 rect_min_size = Vector2( 0, 600 )
 text = "Controls"
 align = 1

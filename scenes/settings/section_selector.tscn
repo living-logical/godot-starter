@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://scenes/settings/section_selector.gd" type="Script" id=1]
-[ext_resource path="res://assets/materials/menu_tab.material" type="Material" id=2]
+[ext_resource path="res://assets/materials/gradient_v_glow.tres" type="Material" id=2]
 [ext_resource path="res://assets/fonts/subtext.tres" type="DynamicFont" id=3]
 
 [node name="SectionSelector" type="Button"]

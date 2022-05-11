@@ -20,15 +20,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-extends Control
-
-
-#########################################
-#
-# Constants
-#
-
-const BG_AUDIO: AudioStream = preload( "res://assets/sounds/menu-loop.ogg" )
+extends VBoxContainer
 
 
 #########################################
@@ -36,31 +28,26 @@ const BG_AUDIO: AudioStream = preload( "res://assets/sounds/menu-loop.ogg" )
 # Overrides
 #
 
-func _exit_tree() -> void:
-    Audio.stop_music()
-    print_debug( "Main scene removed." )
-
 func _ready() -> void:
-    ($SafeArea/BottomArea/Version/Game as Label).text =\
-        "Version: v%s" % Game.version()
-    ($SafeArea/BottomArea/Version/Engine as Label).text =\
-        "Engine: Godot %s" % Engine.get_version_info().string
-    ($SafeArea/MainArea/Content/Menu/Play as Control).grab_focus()
+    $FX/Volume.set( "value", Audio.get_fx_volume() * 100.0 )
+    $Master/Volume.set( "value", Audio.get_main_volume() * 100.0 )
+    $Music/Volume.set( "value", Audio.get_music_volume() * 100.0 )
 
-    # Start the background music
-    Audio.play_music( BG_AUDIO )
+    $FX/Volume.connect( "value_changed", self, "_on_fx_changed" )
+    $Master/Volume.connect( "value_changed", self, "_on_master_changed" )
+    $Music/Volume.connect( "value_changed", self, "_on_music_changed" )
+
 
 #########################################
 #
 # Event handlers
 #
 
-func _on_Play_pressed() -> void:
-    Game.change_scene( "spinning-cube" )
+func _on_fx_changed( value: float ) -> void:
+    Audio.set_fx_volume( value / 100.0 )
 
-func _on_Settings_pressed() -> void:
-    var params = { 'overlay': true, 'transition': { 'disabled': true } }
-    Game.change_scene( "settings", params )
+func _on_master_changed( value: float ) -> void:
+    Audio.set_main_volume( value / 100.0 )
 
-func _on_Exit_pressed() -> void:
-    Game.exit()
+func _on_music_changed( value: float ) -> void:
+    Audio.set_music_volume( value / 100.0 )

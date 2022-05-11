@@ -1,0 +1,32 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://assets/styles/control_filled_glow.tres" type="StyleBox" id=1]
+[ext_resource path="res://assets/styles/control_empty.tres" type="StyleBox" id=2]
+[ext_resource path="res://scenes/settings/slider.gd" type="Script" id=3]
+
+[node name="Slider" type="HBoxContainer"]
+script = ExtResource( 3 )
+
+[node name="Label" type="Label" parent="."]
+margin_top = 13.0
+margin_right = 8.0
+margin_bottom = 27.0
+text = "1"
+
+[node name="Spacer" type="Control" parent="."]
+margin_left = 12.0
+margin_right = 52.0
+margin_bottom = 40.0
+rect_min_size = Vector2( 40, 0 )
+
+[node name="Value" type="ProgressBar" parent="."]
+margin_left = 56.0
+margin_right = 456.0
+margin_bottom = 40.0
+rect_min_size = Vector2( 400, 40 )
+size_flags_vertical = 4
+custom_styles/fg = ExtResource( 1 )
+custom_styles/bg = ExtResource( 2 )
+percent_visible = false
+
+[connection signal="gui_input" from="Value" to="." method="_on_value_gui_input"]

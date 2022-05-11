@@ -57,7 +57,7 @@ func _input( event: InputEvent ) -> void:
         queue_free()
 
 func _ready() -> void:
-    $SafeArea/Content/Selectors.connect( "selected", self, "_on_selector_changed" )
+    $SafeArea/Regions/Header/Selectors.connect( "selected", self, "_on_selector_changed" )
 
 
 #########################################
@@ -72,7 +72,7 @@ func _ready() -> void:
 #
 
 func _on_selector_changed( index: int ) -> void:
-    var content := $SafeArea/Content/Sections as Node
+    var content := $SafeArea/Regions/Sections as Node
     for idx in content.get_child_count():
         var child: CanvasItem = content.get_child( idx ) as CanvasItem
         if child:
